@@ -11,7 +11,13 @@ import './tokens/interfaces/IMintable.sol';
 contract Faucet is Operators {
 
     struct Drip {
+        /// @dev Whether the drip is available for claim.
+        bool active;
+
+        /// @dev Address of the token to drip.
         address token;
+
+        /// @dev Amount of the drip token.
         uint256 amount;
     }
 
@@ -88,7 +94,12 @@ contract Faucet is Operators {
     }
 
     function _addDrip(address token, uint256 amount) internal {
-        drips.push(Drip(token, amount));
+        Drip memory _drip = Drip({
+            active: true,
+            token: token,
+            amount: amount
+        });
+        drips.push(_drip);
     }
 
     /**
@@ -101,17 +112,30 @@ contract Faucet is Operators {
     }
 
     /**
+     * @dev Sets whether a drip is available for claim.
+     */
+    function setDripActive(uint256 _dripId, bool _active) external onlyOperators {
+        require(_dripId < drips.length, "Drip not exists");
+        drips[_dripId].active = _active;
+    }
+
+    /**
      * @dev Claims a drip by its id.
      *
      * Note it will reverts if drip has already claimed.
      */
     function claim(uint256 _dripId) external {
         require(_dripId < drips.length, "Drip not exists");
+
+        Drip memory _drip = drips[_dripId];
+
+        // Reverts if drip is not active.
+        require(_drip.active, "Drip is not active");
+
+        // Reverts if drip has already claimed by caller.
         require(!hasDripClaimed[_dripId][msg.sender], "Drip already claimed");
 
         hasDripClaimed[_dripId][msg.sender] = true;
-
-        Drip memory _drip = drips[_dripId];
         IMintable(_drip.token).mint(msg.sender, _drip.amount);
     }
 
@@ -127,13 +151,25 @@ contract Faucet is Operators {
             uint256 _dripId = _dripsToClaim[i];
             require(_dripId < _dripsLength, "Drip not exists");
 
-            if (hasDripClaimed[_dripId][msg.sender]) {
+            Drip memory _drip = drips[_dripId];
+
+            // Skips if drip is not active.
+            if (!_drip.active) {
+                unchecked {
+                    ++i;
+                }
                 continue;
-            } else {
-                hasDripClaimed[_dripId][msg.sender] = true;
             }
 
-            Drip memory _drip = drips[_dripId];
+            // Skips if drip has already claimed by caller.
+            if (hasDripClaimed[_dripId][msg.sender]) {
+                unchecked {
+                    ++i;
+                }
+                continue;
+            }
+
+            hasDripClaimed[_dripId][msg.sender] = true;
             IMintable(_drip.token).mint(msg.sender, _drip.amount);
 
             unchecked {
@@ -151,13 +187,25 @@ contract Faucet is Operators {
         uint256 _dripsLength = drips.length;
 
         for (uint256 i = 0; i < _dripsLength; ) {
-            if (hasDripClaimed[i][msg.sender]) {
-                continue;
-            } else {
-                hasDripClaimed[i][msg.sender] = true;
-            }
-            
             Drip memory _drip = drips[i];
+
+            // Skips if drip is not active (or not exists).
+            if (!_drip.active) {
+                unchecked {
+                    ++i;
+                }
+                continue;
+            }
+
+            // Skips if drip has already claimed by caller.
+            if (hasDripClaimed[i][msg.sender]) {
+                unchecked {
+                    ++i;
+                }
+                continue;
+            }
+
+            hasDripClaimed[i][msg.sender] = true;
             IMintable(_drip.token).mint(msg.sender, _drip.amount);
 
             unchecked {
