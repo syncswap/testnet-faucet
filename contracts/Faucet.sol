@@ -2,15 +2,13 @@
 
 pragma solidity ^0.8.0;
 
-import './libraries/Ownable.sol';
+import './libraries/Operators.sol';
 import './tokens/ERC20TestToken.sol';
 import './tokens/ERC677TestToken.sol';
 import './tokens/ERC20TestTokenWithPermit.sol';
 import './tokens/interfaces/IMintable.sol';
 
-contract Faucet is Ownable {
-
-    mapping(address => bool) operators;
+contract Faucet is Operators {
 
     struct Drip {
         address token;
@@ -69,19 +67,6 @@ contract Faucet is Ownable {
 
     function dripsLength() external view returns (uint256) {
         return drips.length;
-    }
-
-    function isOperator(address account) public view returns (bool) {
-        return account == owner() || operators[account];
-    }
-
-    modifier onlyOperators() {
-        require(isOperator(msg.sender), "Not operator");
-        _;
-    }
-
-    function setOperator(address account, bool status) external onlyOwner {
-        operators[account] = status;
     }
 
     function _addDrip(address token, uint256 amount) internal {
