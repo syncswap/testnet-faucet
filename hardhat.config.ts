@@ -29,7 +29,7 @@ module.exports = {
 
   // The compiler configuration for 'normal' artifacts.
   solidity: {
-    version: "0.8.14",
+    version: "0.8.15",
     settings: {
       optimizer: {
         enabled: true,

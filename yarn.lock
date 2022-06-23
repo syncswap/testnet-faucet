@@ -840,17 +840,17 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@matterlabs/hardhat-zksync-deploy@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@matterlabs/hardhat-zksync-deploy/-/hardhat-zksync-deploy-0.1.5.tgz#8346ddab9969152742a485cc00221582de189769"
-  integrity sha512-UXhfJWSkHOaRyngy1ZJ5vQehO2zug7ykS2gLoQnMEfrW6an2Teuhqov6UInZ8PXmsF8qvoxgIWV2KuMYN0CcqA==
-  dependencies:
-    glob "^7.1.3"
-
-"@matterlabs/hardhat-zksync-solc@^0.3.2":
+"@matterlabs/hardhat-zksync-deploy@^0.3.0":
   version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@matterlabs/hardhat-zksync-solc/-/hardhat-zksync-solc-0.3.2.tgz#67cdac01d51b5d137673312376ad5b4a6f794ac4"
-  integrity sha512-PYhIJfsqdsU4Px/XGvvmgKI921VRb4Rjm6rNPsjHYh9bw9TKdUgCYLfx5DF36I7+t2pH4e5KST8GwvDKwqkOTg==
+  resolved "https://registry.yarnpkg.com/@matterlabs/hardhat-zksync-deploy/-/hardhat-zksync-deploy-0.3.2.tgz#3de14f4b452326e3cf5df7250391ec813c16f3f6"
+  integrity sha512-WU+S86LIFtOXNHS8HmIY9cD9zLcl3MNRuMM+60577240YdwfPwApeH2gr1F1d0AkgZtgIB+EmIQW7SxNSaifnA==
+  dependencies:
+    glob "^8.0.1"
+
+"@matterlabs/hardhat-zksync-solc@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@matterlabs/hardhat-zksync-solc/-/hardhat-zksync-solc-0.3.4.tgz#270e20f36263f4fde58fe62f9abca55129b99a98"
+  integrity sha512-sd13FuyNBsqtjdKmbwVvqO2HKNt1XxMNV1uGp2r48+ZZjmh3axXoOX/rI9ARIl/owhULCfgdmgcmG/zZR/0keA==
   dependencies:
     "@nomiclabs/hardhat-docker" "^2.0.0"
     dockerode "^3.3.1"
@@ -4260,6 +4260,17 @@ glob@^7.1.2, glob@~7.2.0:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+glob@^8.0.1:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-8.0.3.tgz#415c6eb2deed9e502c68fa44a272e6da6eeca42e"
+  integrity sha512-ull455NHSHI/Y1FqGaaYFaLGkNMMJbavMrEGFXG/PGrg6y7sutWHUHrz6gy6WEBH6akM1M414dWKCNs+IhKdiQ==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^5.0.1"
+    once "^1.3.0"
+
 global@~4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
@@ -5736,6 +5747,13 @@ minimatch@^3.0.4, minimatch@^3.1.1:
   integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
+
+minimatch@^5.0.1:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.0.tgz#1717b464f4971b144f6aabe8f2d0b8e4511e09c7"
+  integrity sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==
+  dependencies:
+    brace-expansion "^2.0.1"
 
 minimist@^1.2.0, minimist@^1.2.6, minimist@~1.2.6:
   version "1.2.6"
@@ -8567,7 +8585,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zksync-web3@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/zksync-web3/-/zksync-web3-0.4.0.tgz#9ab3e8648a6ab11d42b649b3458a0383d6c41bab"
-  integrity sha512-LmrjkQlg2YSR+P0J1NQKtkraCN2ESKfVoMxole3NxesrASQTsk6fR5+ph/8Vucq/Xh8EoAafp07+Q6TavP/TTw==
+zksync-web3@^0.7.4:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/zksync-web3/-/zksync-web3-0.7.5.tgz#d7786922215b3ac6aa1727120603515f8caa58a1"
+  integrity sha512-jkTs8ogJnJeVLj6byNzsPHvngvIVcyYy2S5VnDnOVQFqJKym4Y4tbo7b325VE/J7h3rPPH87LuqGxN3VDCzH2w==
