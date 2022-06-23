@@ -38,6 +38,10 @@ contract Faucet is Operators {
         _initialize();
     }
 
+    /*//////////////////////////////////////////////////////////////
+        INTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+
     /**
      * @dev Initialize default test tokens and drips.
      */
@@ -79,6 +83,19 @@ contract Faucet is Operators {
         _addDrip(address(MKR), 5 * 1e18);
     }
 
+    function _addDrip(address _token, uint256 _amount) internal {
+        Drip memory _drip = Drip({
+            active: true,
+            token: _token,
+            amount: _amount
+        });
+        drips.push(_drip);
+    }
+
+    /*//////////////////////////////////////////////////////////////
+        VIEW FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+
     /**
      * @dev Returns all drips.
      */
@@ -93,22 +110,17 @@ contract Faucet is Operators {
         return drips.length;
     }
 
-    function _addDrip(address token, uint256 amount) internal {
-        Drip memory _drip = Drip({
-            active: true,
-            token: token,
-            amount: amount
-        });
-        drips.push(_drip);
-    }
+    /*//////////////////////////////////////////////////////////////
+        ADMIN FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     /**
      * @dev Adds a drip.
      */
-    function addDrip(address token, uint256 amount) external onlyOperators {
-        require(token != address(0), "Invalid token");
-        require(amount != 0, "Invalid amount");
-        _addDrip(token, amount);
+    function addDrip(address _token, uint256 _amount) external onlyOperators {
+        require(_token != address(0), "Invalid token");
+        require(_amount != 0, "Invalid amount");
+        _addDrip(_token, _amount);
     }
 
     /**
@@ -118,6 +130,17 @@ contract Faucet is Operators {
         require(_dripId < drips.length, "Drip not exists");
         drips[_dripId].active = _active;
     }
+
+    /**
+     * @dev Mint test token and send to recipient.
+     */
+    function mint(address _token, uint256 _amount, address _to) external onlyOperators {
+        IMintable(_token).mint(_to, _amount);
+    }
+
+    /*//////////////////////////////////////////////////////////////
+        USER FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     /**
      * @dev Claims a drip by its id.
