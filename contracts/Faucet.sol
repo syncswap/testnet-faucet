@@ -179,7 +179,7 @@ contract Faucet is Operators {
     /**
      * @dev Claims a drip by its id.
      *
-     * Note it will reverts if drip has already claimed.
+     * Note it will reverts if drip not exists, has already claimed or not active.
      */
     function claim(uint256 _dripId) external {
         require(_dripId < drips.length, "Drip not exists");
@@ -199,7 +199,7 @@ contract Faucet is Operators {
     /**
      * @dev Claim many drips by their ids.
      *
-     * Note drips that are already claimed will be skipped.
+     * Note drips that are not exists, already claimed or not active will be skipped.
      */
     function claimMany(uint256[] memory _dripsToClaim) external {
         uint256 _dripsLength = drips.length;
@@ -242,7 +242,7 @@ contract Faucet is Operators {
     /**
      * @dev Claim all created drips.
      *
-     * Note drips that are already claimed will be skipped without reverts.
+     * Note drips that are not exists, already claimed or not active will be skipped without reverts.
      */
     function claimAll() external {
         uint256 _dripsLength = drips.length;
