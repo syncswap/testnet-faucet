@@ -26,32 +26,41 @@ contract Faucet is Ownable {
     }
 
     function _initialize() internal {
-        IMintable frax = new ERC20TestTokenWithPermit('Frax', 'FRAX', 18, address(this));
-        _addDrip(address(frax), 10000 * 1e18);
+        IMintable FRAX = new ERC20TestTokenWithPermit('Frax', 'FRAX', 18, address(this));
+        _addDrip(address(FRAX), 5000 * 1e18);
 
-        IMintable usdt = new ERC20TestToken('Tether USD', 'USDT', 6, address(this));
-        _addDrip(address(usdt), 10000 * 1e6);
+        IMintable USDT = new ERC20TestToken('Tether USD', 'USDT', 6, address(this));
+        _addDrip(address(USDT), 5000 * 1e6);
 
-        IMintable busd = new ERC20TestToken('Binance USD', 'BUSD', 18, address(this));
-        _addDrip(address(busd), 10000 * 1e18);
+        IMintable BUSD = new ERC20TestToken('Binance USD', 'BUSD', 18, address(this));
+        _addDrip(address(BUSD), 5000 * 1e18);
 
-        IMintable slp = new ERC20TestToken('Smooth Love Potion', 'SLP', 0, address(this));
-        _addDrip(address(slp), 5000000);
+        IMintable SLP = new ERC20TestToken('Smooth Love Potion', 'SLP', 0, address(this));
+        _addDrip(address(SLP), 5000000);
 
-        IMintable crv = new ERC20TestToken('Curve DAO Token', 'CRV', 18, address(this));
-        _addDrip(address(crv), 50000 * 1e18);
+        IMintable CRV = new ERC20TestToken('Curve DAO Token', 'CRV', 18, address(this));
+        _addDrip(address(CRV), 6000 * 1e18);
 
-        IMintable sync = new ERC20TestTokenWithPermit('SyncSwap', 'SYNC', 18, address(this));
-        _addDrip(address(sync), 1000 * 1e18);
+        IMintable SYNC = new ERC20TestTokenWithPermit('SyncSwap', 'SYNC', 18, address(this));
+        _addDrip(address(SYNC), 10000 * 1e18);
 
-        IMintable mltt = new ERC677TestToken('Matter Labs Trial Token', 'MLTT', 10, address(this));
-        _addDrip(address(mltt), 1000000 * 1e10);
+        IMintable MLTT = new ERC677TestToken('Matter Labs Trial Token', 'MLTT', 10, address(this));
+        _addDrip(address(MLTT), 500 * 1e10);
 
-        IMintable shib = new ERC677TestToken('Shiba Inu', 'SHIB', 18, address(this));
-        _addDrip(address(shib), 5000000000 * 1e18);
+        IMintable SHIB = new ERC677TestToken('Shiba Inu', 'SHIB', 18, address(this));
+        _addDrip(address(SHIB), 500000000 * 1e18);
 
-        IMintable renbtc = new ERC20TestToken('renBTC', 'renBTC', 8, address(this));
-        _addDrip(address(renbtc), 1e8);
+        IMintable renBTC = new ERC20TestToken('renBTC', 'renBTC', 8, address(this));
+        _addDrip(address(renBTC), 25e7); // 0.25
+
+        IMintable stETH = new ERC20TestToken('Lido Staked Ether', 'stETH', 18, address(this));
+        _addDrip(address(stETH), 5 * 1e18);
+
+        IMintable AAVE = new ERC20TestToken('Aave', 'AAVE', 18, address(this));
+        _addDrip(address(AAVE), 70 * 1e18);
+
+        IMintable MKR = new ERC20TestToken('Maker', 'MKR', 18, address(this));
+        _addDrip(address(MKR), 5 * 1e18);
     }
 
     function allDrips() external view returns (Drip[] memory) {
