@@ -70,6 +70,13 @@ export async function deployFaucet(): Promise<Contract> {
     return faucet;
 }
 
+export async function deployERC20TestToken(name: string, symbol: string, decimals: number, faucet: string): Promise<Contract> {
+    const ERC20TestToken = await hre.ethers.getContractFactory('ERC20TestToken');
+    const token = await ERC20TestToken.deploy(name, symbol, decimals, faucet);
+    await token.deployed();
+    return token;
+}
+
 export async function mineBlock(): Promise<void> {
     await hre.network.provider.send("hardhat_mine");
 }

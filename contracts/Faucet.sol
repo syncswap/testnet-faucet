@@ -32,6 +32,8 @@ contract Faucet is Operators {
      */
     mapping(uint256 => mapping(address => bool)) public hasDripClaimed;
 
+    event ClaimDrips(uint256 desiredDrips, uint256 succeedDrips);
+
     /**
      * @dev Initializes the contract and default drips.
      */
@@ -114,8 +116,8 @@ contract Faucet is Operators {
     /// @dev Status of drip (0-3).
     enum DripStatus {
         AVAILABLE,
-        SUSPENDED,
         CLAIMED,
+        SUSPENDED,
         SUSPENDED_AND_CLAIMED
     }
 
@@ -201,6 +203,7 @@ contract Faucet is Operators {
      */
     function claimMany(uint256[] memory _dripsToClaim) external {
         uint256 _dripsLength = drips.length;
+        uint256 _succeedDrips = 0;
 
         for (uint256 i = 0; i < _dripsToClaim.length; ) {
             uint256 _dripId = _dripsToClaim[i];
@@ -229,8 +232,11 @@ contract Faucet is Operators {
 
             unchecked {
                 ++i;
+                ++_succeedDrips;
             }
         }
+
+        emit ClaimDrips(_dripsToClaim.length, _succeedDrips);
     }
 
     /**
@@ -240,6 +246,7 @@ contract Faucet is Operators {
      */
     function claimAll() external {
         uint256 _dripsLength = drips.length;
+        uint256 _succeedDrips = 0;
 
         for (uint256 i = 0; i < _dripsLength; ) {
             Drip memory _drip = drips[i];
@@ -265,7 +272,10 @@ contract Faucet is Operators {
 
             unchecked {
                 ++i;
+                ++_succeedDrips;
             }
         }
+
+        emit ClaimDrips(_dripsLength, _succeedDrips);
     }
 }
