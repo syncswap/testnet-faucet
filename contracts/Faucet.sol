@@ -10,6 +10,7 @@ import './tokens/interfaces/IMintable.sol';
 
 contract Faucet is Operators {
 
+    /// @dev Drip info.
     struct Drip {
         /// @dev Whether the drip is available for claim.
         bool active;
@@ -43,7 +44,7 @@ contract Faucet is Operators {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @dev Initialize default test tokens and drips.
+     * @dev Initialize default test tokens and drips (12).
      */
     function _initialize() internal {
         IMintable FRAX = new ERC20TestTokenWithPermit('Frax', 'FRAX', 18, address(this));
@@ -108,6 +109,37 @@ contract Faucet is Operators {
      */
     function dripsLength() external view returns (uint256) {
         return drips.length;
+    }
+
+    /// @dev Status of drip (0-3).
+    enum DripStatus {
+        AVAILABLE,
+        SUSPENDED,
+        CLAIMED,
+        SUSPENDED_AND_CLAIMED
+    }
+
+    /**
+     * @dev Returns status of all drips as of given account.
+     */
+    function getDripStatus(address account) external view returns (DripStatus[] memory status) {
+        uint256 _dripsLength = drips.length;
+        status = new DripStatus[](_dripsLength);
+
+        for (uint256 i = 0; i < _dripsLength; ) {
+            bool _isActive = drips[i].active;
+            bool _hasClaimed = hasDripClaimed[i][account];
+
+            if (_isActive) {
+                status[i] = (_hasClaimed ? DripStatus.CLAIMED : DripStatus.AVAILABLE);
+            } else {
+                status[i] = (_hasClaimed ? DripStatus.SUSPENDED_AND_CLAIMED : DripStatus.SUSPENDED);
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
     }
 
     /*//////////////////////////////////////////////////////////////
