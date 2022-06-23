@@ -152,7 +152,7 @@ contract Faucet is Operators {
      * @dev Adds a drip.
      */
     function addDrip(address _token, uint256 _amount) external onlyOperators {
-        require(_token != address(0), "Invalid token");
+        require(IMintable(_token).faucet() == address(this), "Invalid token to drip");
         require(_amount != 0, "Invalid amount");
         _addDrip(_token, _amount);
     }

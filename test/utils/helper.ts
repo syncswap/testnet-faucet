@@ -5,7 +5,6 @@ import {
     solidityPack,
     toUtf8Bytes
 } from 'ethers/lib/utils';
-import { Provider, Web3Provider } from 'zksync-web3';
 import { Constants } from './constants';
 
 const hre = require("hardhat");

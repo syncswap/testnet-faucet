@@ -44,6 +44,10 @@ describe('Faucet', () => {
         const faucet = (await deployFaucet()).connect(account);
         const token = await deployERC20TestToken('Test Token', 'TEST', 18, faucet.address);
 
+        const tokenInvalid = await deployERC20TestToken('Test Token', 'TEST', 18, account.address);
+        await expect(faucet.addDrip(tokenInvalid.address, 100)).to.be.revertedWith("Invalid token to drip");
+        await expect(faucet.addDrip(Constants.ZERO_ADDRESS, 100)).to.be.reverted; // Without reason
+
         await expect(await faucet.addDrip(token.address, 100));
         await expect(await faucet.dripsLength()).to.eq(13);
         await expect((await faucet.drips(12)).token).to.eq(token.address);

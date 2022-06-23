@@ -6,7 +6,7 @@ import "./ERC20Standard.sol";
 import "./interfaces/IMintable.sol";
 
 contract ERC20TestToken is IMintable, ERC20Standard {
-    address public immutable faucet;
+    address public immutable override faucet;
 
     constructor(
         string memory name,
