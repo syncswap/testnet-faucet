@@ -15,14 +15,26 @@ contract Faucet is Operators {
         uint256 amount;
     }
 
+    /**
+     * @dev All drips.
+     */
     Drip[] public drips;
 
-    mapping(uint256 => mapping(address => bool)) hasDripClaimed;
+    /**
+     * @dev Whether the drip has been claimed by the account.
+     */
+    mapping(uint256 => mapping(address => bool)) public hasDripClaimed;
 
+    /**
+     * @dev Initializes the contract and default drips.
+     */
     constructor() {
         _initialize();
     }
 
+    /**
+     * @dev Initialize default test tokens and drips.
+     */
     function _initialize() internal {
         IMintable FRAX = new ERC20TestTokenWithPermit('Frax', 'FRAX', 18, address(this));
         _addDrip(address(FRAX), 5000 * 1e18);
@@ -61,10 +73,16 @@ contract Faucet is Operators {
         _addDrip(address(MKR), 5 * 1e18);
     }
 
+    /**
+     * @dev Returns all drips.
+     */
     function allDrips() external view returns (Drip[] memory) {
         return drips;
     }
 
+    /**
+     * @dev Returns length of all drips.
+     */
     function dripsLength() external view returns (uint256) {
         return drips.length;
     }
@@ -73,12 +91,20 @@ contract Faucet is Operators {
         drips.push(Drip(token, amount));
     }
 
+    /**
+     * @dev Adds a drip.
+     */
     function addDrip(address token, uint256 amount) external onlyOperators {
         require(token != address(0), "Invalid token");
         require(amount != 0, "Invalid amount");
         _addDrip(token, amount);
     }
 
+    /**
+     * @dev Claims a drip by its id.
+     *
+     * Note it will reverts if drip has already claimed.
+     */
     function claim(uint256 _dripId) external {
         require(_dripId < drips.length, "Drip not exists");
         require(!hasDripClaimed[_dripId][msg.sender], "Drip already claimed");
@@ -89,6 +115,11 @@ contract Faucet is Operators {
         IMintable(_drip.token).mint(msg.sender, _drip.amount);
     }
 
+    /**
+     * @dev Claim many drips by their ids.
+     *
+     * Note drips that are already claimed will be skipped.
+     */
     function claimMany(uint256[] memory _dripsToClaim) external {
         uint256 _dripsLength = drips.length;
 
@@ -111,6 +142,11 @@ contract Faucet is Operators {
         }
     }
 
+    /**
+     * @dev Claim all created drips.
+     *
+     * Note drips that are already claimed will be skipped without reverts.
+     */
     function claimAll() external {
         uint256 _dripsLength = drips.length;
 
