@@ -94,36 +94,31 @@ contract Faucet is Ownable {
         _addDrip(token, amount);
     }
 
-    function claim(uint256 dripId) external {
-        require(dripId < drips.length, "Drip not exists");
+    function claim(uint256 _dripId) external {
+        require(_dripId < drips.length, "Drip not exists");
+        require(!hasDripClaimed[_dripId][msg.sender], "Drip already claimed");
 
-        if (!isOperator(msg.sender)) {
-            require(!hasDripClaimed[dripId][msg.sender], "Drip already claimed");
-            hasDripClaimed[dripId][msg.sender] = true;
-        }
+        hasDripClaimed[_dripId][msg.sender] = true;
 
-        Drip memory drip = drips[dripId];
-        IMintable(drip.token).mint(msg.sender, drip.amount);
+        Drip memory _drip = drips[_dripId];
+        IMintable(_drip.token).mint(msg.sender, _drip.amount);
     }
 
-    function claimMany(uint256[] memory dripIds) external {
+    function claimMany(uint256[] memory _dripsToClaim) external {
         uint256 _dripsLength = drips.length;
-        bool _isOperator = isOperator(msg.sender);
 
-        for (uint256 i = 0; i < dripIds.length; ) {
-            uint256 dripId = dripIds[i];
-            require(dripId < _dripsLength, "Drip not exists");
+        for (uint256 i = 0; i < _dripsToClaim.length; ) {
+            uint256 _dripId = _dripsToClaim[i];
+            require(_dripId < _dripsLength, "Drip not exists");
 
-            if (!_isOperator) {
-                if (hasDripClaimed[dripId][msg.sender]) {
-                    continue;
-                } else {
-                    hasDripClaimed[dripId][msg.sender] = true;
-                }
+            if (hasDripClaimed[_dripId][msg.sender]) {
+                continue;
+            } else {
+                hasDripClaimed[_dripId][msg.sender] = true;
             }
 
-            Drip memory drip = drips[dripId];
-            IMintable(drip.token).mint(msg.sender, drip.amount);
+            Drip memory _drip = drips[_dripId];
+            IMintable(_drip.token).mint(msg.sender, _drip.amount);
 
             unchecked {
                 ++i;
@@ -133,19 +128,16 @@ contract Faucet is Ownable {
 
     function claimAll() external {
         uint256 _dripsLength = drips.length;
-        bool _isOperator = isOperator(msg.sender);
 
         for (uint256 i = 0; i < _dripsLength; ) {
-            if (!_isOperator) {
-                if (hasDripClaimed[i][msg.sender]) {
-                    continue;
-                } else {
-                    hasDripClaimed[i][msg.sender] = true;
-                }
+            if (hasDripClaimed[i][msg.sender]) {
+                continue;
+            } else {
+                hasDripClaimed[i][msg.sender] = true;
             }
-
-            Drip memory drip = drips[i];
-            IMintable(drip.token).mint(msg.sender, drip.amount);
+            
+            Drip memory _drip = drips[i];
+            IMintable(_drip.token).mint(msg.sender, _drip.amount);
 
             unchecked {
                 ++i;
