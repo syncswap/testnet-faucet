@@ -2,8 +2,8 @@
 node_modules/
 
 # build binaries
-artifacts/
-artifacts-zk/
+#artifacts/
+#artifacts-zk/
 artifacts-normal/
 
 cache/
