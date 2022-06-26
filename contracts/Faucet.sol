@@ -64,7 +64,7 @@ contract Faucet is Operators {
         IMintable CRV = new ERC20TestToken('Curve DAO Token', 'CRV', 18, address(this));
         _addDrip(address(CRV), 6000 * 1e18);
 
-        IMintable SYNC = new ERC20TestTokenWithPermit('SyncSwap', 'SYNC', 18, address(this));
+        IMintable SYNC = new ERC20TestTokenWithPermit('Testnet Token', 'TEST', 18, address(this));
         _addDrip(address(SYNC), 10000 * 1e18);
 
         IMintable MLTT = new ERC677TestToken('Matter Labs Trial Token', 'MLTT', 10, address(this));
