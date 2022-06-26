@@ -32,6 +32,11 @@ contract Faucet is Operators {
      */
     mapping(uint256 => mapping(address => bool)) public hasDripClaimed;
 
+    /**
+     * @dev Whether claiming has been paused.
+     */
+    bool public paused = false;
+
     event ClaimDrips(uint256 desiredDrips, uint256 succeedDrips);
 
     /**
@@ -169,6 +174,13 @@ contract Faucet is Operators {
     }
 
     /**
+     * @dev Sets pause status.
+     */
+    function setDripAmount(bool _paused) external onlyOperators {
+        paused = _paused;
+    }
+
+    /**
      * @dev Sets whether a drip is available for claim.
      */
     function setDripActive(uint256 _dripId, bool _active) external onlyOperators {
@@ -193,6 +205,7 @@ contract Faucet is Operators {
      * Note it will reverts if drip not exists, has already claimed or not active.
      */
     function claim(uint256 _dripId) external {
+        require(!paused, "Faucet has been paused");
         require(_dripId < drips.length, "Drip not exists");
 
         Drip memory _drip = drips[_dripId];
@@ -213,6 +226,7 @@ contract Faucet is Operators {
      * Note drips that are not exists, already claimed or not active will be skipped.
      */
     function claimMany(uint256[] memory _dripsToClaim) external {
+        require(!paused, "Faucet has been paused");
         uint256 _dripsLength = drips.length;
         uint256 _succeedDrips = 0;
 
@@ -256,6 +270,7 @@ contract Faucet is Operators {
      * Note drips that are not exists, already claimed or not active will be skipped without reverts.
      */
     function claimAll() external {
+        require(!paused, "Faucet has been paused");
         uint256 _dripsLength = drips.length;
         uint256 _succeedDrips = 0;
 
