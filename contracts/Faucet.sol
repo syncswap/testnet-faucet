@@ -161,6 +161,14 @@ contract Faucet is Operators {
     }
 
     /**
+     * @dev Sets amount for a drip.
+     */
+    function setDripAmount(uint256 _dripId, uint256 _amount) external onlyOperators {
+        require(_dripId < drips.length, "Drip not exists");
+        drips[_dripId].amount = _amount;
+    }
+
+    /**
      * @dev Sets whether a drip is available for claim.
      */
     function setDripActive(uint256 _dripId, bool _active) external onlyOperators {
