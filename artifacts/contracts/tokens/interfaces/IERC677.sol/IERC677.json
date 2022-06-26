@@ -1,5 +1,5 @@
 {
-  "_format": "hh-sol-artifact-1",
+  "_format": "hh-zksolc-artifact-1",
   "contractName": "IERC677",
   "sourceName": "contracts/tokens/interfaces/IERC677.sol",
   "abi": [
@@ -289,5 +289,6 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},
-  "deployedLinkReferences": {}
+  "deployedLinkReferences": {},
+  "factoryDeps": {}
 }

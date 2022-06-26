@@ -1,5 +1,5 @@
 {
-  "_format": "hh-sol-artifact-1",
+  "_format": "hh-zksolc-artifact-1",
   "contractName": "Operators",
   "sourceName": "contracts/libraries/Operators.sol",
   "abi": [
@@ -115,5 +115,6 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},
-  "deployedLinkReferences": {}
+  "deployedLinkReferences": {},
+  "factoryDeps": {}
 }

@@ -1,27 +1,27 @@
 import chai, { expect } from 'chai'
 import { solidity } from 'ethereum-waffle'
 
-import { deployERC20TestToken, deployFaucet, expandTo18Decimals } from './utils/helper'
+import { deployERC20TestToken, deployAndInitializeFaucet } from './utils/helper'
 import { Constants } from './utils/constants'
-import { Fixtures } from './utils/fixtures'
 
 const hre = require("hardhat");
 chai.use(solidity)
 
 describe('Faucet', () => {
+
     it('dripsLength', async () => {
-        const faucet = (await deployFaucet());
+        const faucet = (await deployAndInitializeFaucet());
         await expect(await faucet.dripsLength()).to.eq(12);
     });
 
     it('allDrips', async () => {
-        const faucet = (await deployFaucet());
+        const faucet = (await deployAndInitializeFaucet());
         await expect((await faucet.allDrips()).length).to.eq(12);
     });
 
     it('getDripStatus', async () => {
         const account = (await hre.ethers.getSigners())[0];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
 
         await expect(await faucet.getDripStatus(account.address)).to.eql(Array(12).fill(0));
         await expect(faucet.setDripActive(0, false));
@@ -41,7 +41,7 @@ describe('Faucet', () => {
 
     it('addDrip:claim', async () => {
         const account = (await hre.ethers.getSigners())[0];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
         const token = await deployERC20TestToken('Test Token', 'TEST', 18, faucet.address);
 
         const tokenInvalid = await deployERC20TestToken('Test Token', 'TEST', 18, account.address);
@@ -62,7 +62,7 @@ describe('Faucet', () => {
 
     it('addDrip:claimMany', async () => {
         const account = (await hre.ethers.getSigners())[0];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
         const token = await deployERC20TestToken('Test Token', 'TEST', 18, faucet.address);
 
         await expect(await faucet.addDrip(token.address, 100));
@@ -75,7 +75,7 @@ describe('Faucet', () => {
 
     it('addDrip:claimAll', async () => {
         const account = (await hre.ethers.getSigners())[0];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
         const token = await deployERC20TestToken('Test Token', 'TEST', 18, faucet.address);
 
         await expect(await faucet.addDrip(token.address, 100));
@@ -88,7 +88,7 @@ describe('Faucet', () => {
 
     it('claim', async () => {
         const account = (await hre.ethers.getSigners())[1];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
 
         await expect(faucet.claim(0));
         await expect(faucet.claim(0)).to.be.revertedWith('Drip already claimed');
@@ -97,7 +97,7 @@ describe('Faucet', () => {
 
     it('claim:active', async () => {
         const account = (await hre.ethers.getSigners())[0];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
 
         await expect(faucet.setDripActive(0, false));
         await expect(faucet.claim(0)).to.be.revertedWith('Drip is not active');
@@ -108,7 +108,7 @@ describe('Faucet', () => {
 
     it('claimMany', async () => {
         const account = (await hre.ethers.getSigners())[1];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
 
         await expect(faucet.claimMany([0, 2, 5, 20])).to.be.revertedWith('Drip not exists');
 
@@ -123,7 +123,7 @@ describe('Faucet', () => {
 
     it('claimAll', async () => {
         const account = (await hre.ethers.getSigners())[1];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
 
         await expect(faucet.claimAll())
             .to.emit(faucet, 'ClaimDrips')
@@ -132,7 +132,7 @@ describe('Faucet', () => {
 
     it('claimAll:part', async () => {
         const account = (await hre.ethers.getSigners())[0];
-        const faucet = (await deployFaucet()).connect(account);
+        const faucet = (await deployAndInitializeFaucet()).connect(account);
 
         await expect(faucet.claim(2));
         await expect(faucet.setDripActive(10, false));
