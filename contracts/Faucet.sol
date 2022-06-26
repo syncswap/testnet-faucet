@@ -38,7 +38,7 @@ contract Faucet is Operators {
      * @dev Initializes the contract and default drips.
      */
     constructor() {
-        _initialize();
+        //_initialize(); // Moved to the deploy script.
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -48,6 +48,8 @@ contract Faucet is Operators {
     /**
      * @dev Initialize default test tokens and drips (12).
      */
+    // Moved to the deploy script.
+    /*
     function _initialize() internal {
         IMintable FRAX = new ERC20TestTokenWithPermit('Frax', 'FRAX', 18, address(this));
         _addDrip(address(FRAX), 5000 * 1e18);
@@ -85,6 +87,7 @@ contract Faucet is Operators {
         IMintable MKR = new ERC20TestToken('Maker', 'MKR', 18, address(this));
         _addDrip(address(MKR), 5 * 1e18);
     }
+    */
 
     function _addDrip(address _token, uint256 _amount) internal {
         Drip memory _drip = Drip({
