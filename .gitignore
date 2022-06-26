@@ -23,6 +23,6 @@ yarn-error.log
 
 # workspace
 misc/
-deploy/
+#deploy/
 deploy-zksync.sh
 contracts/test/
